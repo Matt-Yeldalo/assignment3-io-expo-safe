@@ -26,9 +26,12 @@ export default forwardRef((props, ref) => {
     <View style={styles.product}>
       <Text style={styles.productHeading}>{props.title}</Text>
       <View style={styles.productInput}>
+        <View style={[styles.pickerStyle, 
+          {flexGrow: 2,
+          flexShrink: 0,
+          flexBasis: "auto"}]}>
         <Picker
           selectedValue={selectedItem}
-          style={styles.pickerStyle}
           onValueChange={(itemValue, itemIndex) => onItemChange(itemValue)}
         >
           {props.data.map((item, index) => (
@@ -39,34 +42,43 @@ export default forwardRef((props, ref) => {
             />
           ))}
         </Picker>
+        </View>
+        <View style={[styles.pickerStyle, 
+          {flexGrow: 1,
+          flexShrink: 0,
+          flexBasis: "auto"}]}>
         <Picker
-          selectedValue={selectedItemQty}
-          style={styles.pickerStyle}
+          selectedValue={selectedItemQty}          
           onValueChange={(qtyValue, qtyIndex) => onQtyChange(qtyValue)}
         >
           {props.qtyArray.map((qty, index) => (
             <Picker.Item key={index} label={qty.toString()} value={qty} />
           ))}
         </Picker>
+        </View>
       </View>
     </View>
   );
 });
 
 const styles = StyleSheet.create({
-  product: {
-    flex: 1,
-    "justifyContent": "center",
-    padding: 10,
+  product: { 
+    // justifyContent: "flex-start",
+    // alignContent: "flex-end",
+    alignItems: "center",
+    padding: 7,
   },
   productHeading: {
     // fontFamily: "cairo sansserif"
+    textAlign: "center",
+    fontSize: 25
   },
   productInput: {
-    flex: 1,
-    "flexDirection": "row",
+  width: '100%',
+  flexDirection: "row"
   },
   pickerStyle: {
     fontFamily: "inherit",
+   
   },
 });

@@ -75,23 +75,19 @@ const styles = StyleSheet.create({
     // fontFamily: "firasans sansserif"
   },
   container: {
-    flex: 1,
-    width: "80%",
-    "margin":"auto",
-    "alignItems": "center",
+    width: "82%",    
+    justifyContent: "center",
     borderRadius: 5,
     backgroundColor: "#fff",
   },
   backgroundImage: {
     width: "100%",
     height: "100%",
-    flex: 1,
-    "justifyContent":"center",
-    "alignItems":"center",
+    alignItems: "center"
   },
   heading: {
     // fontFamily: "Lobster",
-    padding: 10,
+    padding: 20,
     textAlign: "center",
     fontSize: 30,
   },

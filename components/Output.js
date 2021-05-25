@@ -5,7 +5,7 @@ export default function Output(props) {
   return (
     <View style={styles.output}>
       <Button
-        color='#e74853'
+        backgroundColor='#e74853'
         onPress={props.calculateTotal}
         title='Calculate Total'
       />
