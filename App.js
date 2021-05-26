@@ -1,16 +1,33 @@
 import React, { useState, useRef } from "react";
+import AppLoading from "expo-app-loading";
 import {
   ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
-  View
+  View,
+  ScrollView,
+  Image,
 } from "react-native";
+// Components
 import Output from "./components/Output";
 import ProductPicker from "./components/ProductPicker";
-
-export default function App(){
-  const image = require("./img/food-background.jpg");
+// Import fonts
+import * as Font from "expo-font";
+export default function App() {
+  // State checks if fonts are loaded
+  const [fontsReady, setFontsReady] = useState(false);
+  // Load custom fonts
+  const fontLoad = () => {
+    return Font.loadAsync({
+      "Lobster-Regular": require("./assets/fonts/Lobster-Regular.ttf"),
+      "FiraSans-Regular": require("./assets/fonts/FiraSans-Regular.ttf"),
+      "Cairo-Bold": require("./assets/fonts/Cairo-Bold.ttf"),
+    });
+  };
+  // Load images
+  const backgroundImage = require("./assets/food-background.jpg");
+  const headingImage = require("./assets/burger.jpg");
   // Get the food and drink data, assign to variables
   const data = require("./data.json");
   const foods = data.food;
@@ -44,26 +61,47 @@ export default function App(){
       picker.updateTotalEvent.current.updateTotal();
     }
   }
+  // If fonts aren't ready
+  if (!fontsReady) {
+    return (
+      <AppLoading
+        startAsync={fontLoad}
+        onFinish={() => setFontsReady(true)}
+        onError={console.warn}
+      />
+    );
+  }
   return (
     <SafeAreaView style={styles.mainStyle}>
-      <ImageBackground source={image} style={styles.backgroundImage}>
+      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <Text style={styles.heading}>Sydney Food Festival</Text>
-        <View style={styles.container}>
-          {pickers.map((item, index) => (
-            <ProductPicker
-              key={index}
-              title={item.title}
-              data={item.data}
-              qtyArray={qtyArray}
-              updateTotalCallback={item.updateTotal}
-              ref={item.updateTotalEvent}
-            />
-          ))}
+        <View style={styles.viewContainer}>
+          <ScrollView style={styles.scrollViewContainer}>
+            <View style={styles.contentContainer}>
+              <Image style={styles.headingImage} source={headingImage} />
+              {pickers.map((item, index) => (
+                <ProductPicker
+                  key={index}
+                  title={item.title}
+                  data={item.data}
+                  qtyArray={qtyArray}
+                  updateTotalCallback={item.updateTotal}
+                  ref={item.updateTotalEvent}
+                />
+              ))}
 
-          <Output
-            calculateTotal={calculateTotal}
-            totalCost={foodTotal + drinkTotal}
-          />
+              <Output
+                calculateTotal={calculateTotal}
+                totalCost={foodTotal + drinkTotal}
+              />
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.footer}>
+          <Text style={{
+            color: "#fff",
+            fontSize: 12,
+          }}>App developed by Matt Yeldalo, Kristine Jimenez, Yetian Shi, and Jeffrey Chien</Text>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -71,24 +109,54 @@ export default function App(){
 }
 
 const styles = StyleSheet.create({
-  mainStyle: {
-    // fontFamily: "firasans sansserif"
+  footer:{
+    backgroundColor: '#07a0c3',
+    padding: 10,
+    width: '100%',
+    justifyContent: "center"
   },
-  container: {
-    width: "82%",    
-    justifyContent: "center",
+  mainStyle: {
+    fontFamily: "FiraSans-Regular",
+  },
+  scrollViewContainer: {
+    flex: 1,
+  },
+  contentContainer: {
+    height: "auto",
+    flex: 1,
+    paddingBottom: 200,
+  },
+  viewContainer: {
+    flex: 1,
+    overflow: "hidden",
+    width: "80%",
+    height: "100%",
     borderRadius: 5,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255,255,255,0.98)",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  headingImage: {
+    width: "100%",
+    height: "30%",
+    opacity: 0.9,
   },
   backgroundImage: {
     width: "100%",
     height: "100%",
-    alignItems: "center"
+    alignItems: "center",
   },
   heading: {
-    // fontFamily: "Lobster",
+    fontFamily: "Lobster-Regular",
+    color: "#dd1c1a",
     padding: 20,
     textAlign: "center",
-    fontSize: 30,
+    fontSize: 43,
   },
 });

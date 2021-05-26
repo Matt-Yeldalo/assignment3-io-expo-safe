@@ -1,5 +1,5 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
-import { StyleSheet, Text, View} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 export default forwardRef((props, ref) => {
@@ -18,7 +18,7 @@ export default forwardRef((props, ref) => {
   // Update the state based on the quantity and item price
   function updateTotal() {
     let item = parseInt(props.data[selectedItem].price);
-    let qty = parseInt(selectedItemQty);    
+    let qty = parseInt(selectedItemQty);
     props.updateTotalCallback(item * qty);
   }
 
@@ -26,35 +26,41 @@ export default forwardRef((props, ref) => {
     <View style={styles.product}>
       <Text style={styles.productHeading}>{props.title}</Text>
       <View style={styles.productInput}>
-        <View style={[styles.pickerStyle, 
-          {flexGrow: 2,
-          flexShrink: 0,
-          flexBasis: "auto"}]}>
-        <Picker
-          selectedValue={selectedItem}
-          onValueChange={(itemValue, itemIndex) => onItemChange(itemValue)}
+        <View
+          style={[
+            styles.pickerStyle,
+            { flexGrow: 2, flexShrink: 0, flexBasis: "auto" },
+          ]}
         >
-          {props.data.map((item, index) => (
-            <Picker.Item
-              key={index}
-              label={`${item.item}-$${item.price}`}
-              value={index}
-            />
-          ))}
-        </Picker>
+          <Picker
+            selectedValue={selectedItem}
+            onValueChange={(itemValue, itemIndex) => onItemChange(itemValue)}
+            itemStyle={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+          >
+            {props.data.map((item, index) => (
+              <Picker.Item
+                key={index}
+                label={`${item.item}-$${item.price}`}
+                value={index}
+              />
+            ))}
+          </Picker>
         </View>
-        <View style={[styles.pickerStyle, 
-          {flexGrow: 1,
-          flexShrink: 0,
-          flexBasis: "auto"}]}>
-        <Picker
-          selectedValue={selectedItemQty}          
-          onValueChange={(qtyValue, qtyIndex) => onQtyChange(qtyValue)}
+        <View
+          style={[
+            styles.pickerStyle,
+            { flexGrow: 1, flexShrink: 0, flexBasis: "auto" },
+          ]}
         >
-          {props.qtyArray.map((qty, index) => (
-            <Picker.Item key={index} label={qty.toString()} value={qty} />
-          ))}
-        </Picker>
+          <Picker
+            selectedValue={selectedItemQty}
+            onValueChange={(qtyValue, qtyIndex) => onQtyChange(qtyValue)}
+            itemStyle={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+          >
+            {props.qtyArray.map((qty, index) => (
+              <Picker.Item key={index} label={qty.toString()} value={qty} />
+            ))}
+          </Picker>
         </View>
       </View>
     </View>
@@ -62,23 +68,21 @@ export default forwardRef((props, ref) => {
 });
 
 const styles = StyleSheet.create({
-  product: { 
-    // justifyContent: "flex-start",
-    // alignContent: "flex-end",
+  product: {
     alignItems: "center",
     padding: 7,
   },
   productHeading: {
-    // fontFamily: "cairo sansserif"
+    fontFamily: "Cairo-Bold",
     textAlign: "center",
-    fontSize: 25
+    color: "#07a0c3",
+    fontSize: 25,
   },
   productInput: {
-  width: '100%',
-  flexDirection: "row"
+    width: "100%",
+    flexDirection: "row",
   },
   pickerStyle: {
     fontFamily: "inherit",
-   
   },
 });
